@@ -5,7 +5,6 @@
 //  Created by Ganesh on 8/22/16.
 //  Copyright © 2016 Ganesh. All rights reserved.
 //
-
 import UIKit
 import MapKit
 
@@ -17,7 +16,6 @@ protocol HandleMapSearch: class
 class ViewController: UIViewController
 {
     var resultSearchController: UISearchController!
-    //@IBOutlet weak var mapView: MKMapView!
     
     //@IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mapView: MKMapView!
@@ -28,16 +26,17 @@ class ViewController: UIViewController
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
         resultSearchController.searchResultsUpdater = locationSearchTable
         let searchBar = resultSearchController!.searchBar
-        searchBar.sizeToFit()
+       searchBar.sizeToFit()
         searchBar.placeholder = "Search for places"
         navigationItem.titleView = resultSearchController?.searchBar
         resultSearchController.hidesNavigationBarDuringPresentation = false
-        resultSearchController.dimsBackgroundDuringPresentation = true
-        definesPresentationContext = true
+       definesPresentationContext = true
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
         
     }
+    
+   
     
 }
 
@@ -57,12 +56,17 @@ extension ViewController: HandleMapSearch
             annotation.subtitle = "\(city) \(country)"
         }
         
+        
         mapView.addAnnotation(annotation)
         let span = MKCoordinateSpanMake(0.05, 0.05)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
+    
+    
+    }
+    func mapView(mapView: MKMapView, didSelectAnnotationView pinView: MKAnnotationView) {
+                print ("hiiii\(pinView.annotation?.title!)")
     }
     
 }
-
 
