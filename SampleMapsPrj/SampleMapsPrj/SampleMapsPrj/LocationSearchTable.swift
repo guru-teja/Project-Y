@@ -17,6 +17,27 @@ class LocationSearchTable: UITableViewController
     var mapView: MKMapView?
     
     
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return matchingItems.count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell")!
+        let selectedItem = matchingItems[indexPath.row].placemark
+        cell.textLabel?.text = selectedItem.name
+        cell.detailTextLabel?.text = selectedItem.country
+        return cell
+    }
+    
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let selectedItem = matchingItems[indexPath.row].placemark
+        handleMapSearchDelegate?.sPoint(selectedItem)
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    
     
 }
 
@@ -44,28 +65,3 @@ extension LocationSearchTable : UISearchResultsUpdating
     
 }
 
-extension LocationSearchTable {
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return matchingItems.count
-    }
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell")!
-        let selectedItem = matchingItems[indexPath.row].placemark
-        cell.textLabel?.text = selectedItem.name
-        cell.detailTextLabel?.text = selectedItem.country
-        return cell
-    }
-    
-}
-
-extension LocationSearchTable {
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let selectedItem = matchingItems[indexPath.row].placemark
-        handleMapSearchDelegate?.sPoint(selectedItem)
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-}
